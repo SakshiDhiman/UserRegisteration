@@ -1,0 +1,13 @@
+table {
+    width: 100%;
+    text-align: center;
+    background-color: #ffe3de;
+  }
+  span{
+    color:#440a67;
+    /* text-align:center; */
+    align-items: center;
+  }
+  th{
+    border: 1px dashed #440a67;
+  }

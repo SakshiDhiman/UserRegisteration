@@ -1,0 +1,168 @@
+<p>
+    <mat-toolbar>
+      <span>Register</span>
+    </mat-toolbar>
+  </p>
+<form [formGroup]="form" (ngSubmit)="onSubmit(form.value)"  >
+    <mat-form-field class="example-full-width">
+          <mat-label>First Name</mat-label>
+          <input matInput placeholder="Ex. Sakshi" value="" formControlName="firstname">
+          <mat-error >
+             First Name is required.
+          </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+          <mat-label>Last Name</mat-label>
+          <input matInput placeholder="Ex. Dhiman" value="" formControlName="lastname">
+          <mat-error>
+             Last Name is required
+          </mat-error>
+     </mat-form-field>
+     <mat-form-field class="example-full-width">
+         <mat-label>Email</mat-label>
+          <input matInput placeholder="Ex. abc@gmail.com" value="" formControlName="email">
+          <mat-error *ngIf="form.controls['email'].errors?.required">Email is Required.</mat-error>
+         <mat-error *ngIf="form.controls['email'].errors?.email">Invalid email address.
+         </mat-error>
+     </mat-form-field>
+     <mat-form-field class="example-full-width">
+         <mat-label>Phone</mat-label>
+         <input matInput placeholder="Ex. 9466******" value="" formControlName="phone">
+         <mat-error>
+            <mat-error *ngIf="form.controls['phone'].errors?.required">This field is mandatory.</mat-error>
+            <mat-error *ngIf="form.controls['phone'].errors?.maxlength">Max. {{form.controls['phone'].errors?.maxlength.requiredLength}} charactors needed.</mat-error>
+            <mat-error *ngIf="form.controls['phone'].errors?.pattern">Please, Enter 10 digit Mobile Number.</mat-error>
+         </mat-error>
+     </mat-form-field>
+     <mat-form-field class="example-full-width">
+         <mat-label>UserName</mat-label>
+         <input matInput placeholder="Ex. Sakshi24" value="" formControlName="username">
+         <mat-error>
+            <mat-error *ngIf="form.controls['username'].errors?.required">This field is mandatory.</mat-error>
+            <mat-error *ngIf="form.controls['username'].errors?.shouldBeUnique">Username already exists.</mat-error>
+            <mat-error *ngIf="form.controls['username'].errors?.cannotContainSpace">UserName cannot contain space.</mat-error>
+            <!-- <mat-error *ngIf="username.pending">Checking for uniqueness.</mat-error> -->
+         </mat-error>
+     </mat-form-field>
+     <mat-form-field class="example-full-width">
+         <mat-label>Password</mat-label>
+         <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+             <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+         </button>
+         <input matInput placeholder="Ex. abAB123" [type]="hide ? 'password' : 'text'"  formControlName="password">
+         <mat-error >
+             <mat-error *ngIf="form.controls['password'].errors?.required">This field is mandatory.</mat-error>
+             <mat-error *ngIf="form.controls['password'].errors?.minlength">Minimum {{form.controls['password'].errors?.minlength.requiredLength}} charactors needed.</mat-error>
+             <mat-error *ngIf="form.controls['password'].errors?.pattern">Password must contain '^[a-zA-Z]+[0-9]+$'.</mat-error>
+         </mat-error>
+  </mat-form-field><br/><br/>
+  <button mat-raised-button color="primary" type="submit" [disabled]=!form.valid>Register</button> &nbsp;
+  <button mat-raised-button color="accent" (click)="onClear()">Cancel</button>
+  
+</form><br>
+ <!-- {{form.value | json}} -->
+
+
+<div class="card align-items-center">
+  <p>
+    <mat-toolbar>
+      <span style="color:#440a67;text-align:center;">Registered Users</span>
+    </mat-toolbar>
+  </p>
+   <table id="t01">
+    <tr>
+      <!-- <th *ngFor="let k of key">{{k}}</th> -->
+      <th>Sr.No.</th>
+      <th>Firstname</th>
+      <th>Lastname</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>UserName</th>
+      <th>Action</th>
+    </tr>
+    <tr *ngFor="let data of arraydata; let i =index">
+      <td>{{i+1}}</td>
+  
+      <td >
+        <div *ngIf="!data.isEdit">
+          {{data.firstname}}
+        </div>
+        <div *ngIf="data.isEdit">
+          <input required matInput class="form-control" [(ngModel)]="data.firstname" name="firstname" #firstname="ngModel">
+        </div>
+      </td>
+      <td >
+        <div *ngIf="!data.isEdit">
+          {{data.lastname}}
+        </div>
+        <div *ngIf="data.isEdit">
+          <input required matInput class="form-control" [(ngModel)]="data.lastname" name="lastname" #lastname="ngModel">
+        </div>
+      </td>
+      <td >
+        <div *ngIf="!data.isEdit">
+          {{data.email}}
+        </div>
+        <div *ngIf="data.isEdit">
+          <input required matInput class="form-control" [(ngModel)]="data.email" name="email" #email="ngModel">
+        </div>
+      </td>
+      <td >
+        <div *ngIf="!data.isEdit">
+          {{data.phone}}
+        </div>
+        <div *ngIf="data.isEdit">
+          <input required matInput class="form-control" [(ngModel)]="data.phone" name="phone" #phone="ngModel">
+        </div>
+      </td>
+      <td >
+        <div *ngIf="!data.isEdit">
+          {{data.username}}
+        </div>
+        <div *ngIf="data.isEdit">
+          <input required matInput class="form-control" [(ngModel)]="data.username" name="username" #username="ngModel">
+        </div>
+      </td>
+      
+      <td >
+        <div *ngIf="!data.isEdit" class="row">
+          <div class="col-md-6 text-right">
+            <button mat-raised-button color="primary" (click)="updateItem(data)">Update</button>
+          </div>&nbsp;
+          <div>
+            <button mat-raised-button color="warn" (click)="deleteItem(data)" >Delete</button>
+          </div>
+       </div>
+        <div *ngIf="data.isEdit" class="row">
+          <div class="col-md-6 text-right">
+            <button mat-raised-button color="primary" (click)="saveItem(data)">Save</button>
+          </div>&nbsp;
+          <div>
+            <button mat-raised-button color="accent" (click)="closeItem(data)">Close</button>
+          </div>
+       </div>
+       
+        
+      </td>
+    </tr>
+    
+  </table><br/>
+
+</div>
+ 
+<!-- <tr *ngFor="let data of arraydata; let i =index">
+  <td>{{i+1}}</td>
+  
+  <td >{{data.firstname}}</td>
+  <td >{{data.lastname}}</td>
+  <td >{{data.email}}</td>
+  <td >{{data.phone}}</td>
+  <td >{{data.username}}</td>
+  <td>
+    <button mat-raised-button color="warn" (click)="deleteItem(data)" >Delete</button> &nbsp;
+    <button mat-raised-button color="primary" (click)="updateItem(user)">Update</button>
+  </td>
+</tr> -->
+
+
+
