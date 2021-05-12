@@ -1,6 +1,8 @@
-import { AbstractControl, ValidationErrors } from "@angular/forms";
+import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
 
 export class UsernameValidators{
+  
+
    static cannotContainSpace(control : AbstractControl) : ValidationErrors | null {
        
     if (control.value != null && (control.value as string).indexOf(' ') >= 0)
@@ -8,15 +10,24 @@ export class UsernameValidators{
        return null;
     }
 
-    static shouldBeUnique(control : AbstractControl) : Promise<ValidationErrors | null> {
-        return new Promise((resolve, reject) => {
-            setTimeout(()=> {
-                if(control.value==='sakshi')
-                  resolve ({shouldBeUnique : true});
-                resolve (null);
-            },2000);
-           
-        });
-         
+  static shouldBeUnique(arraydata:any): ValidatorFn {
+        return (control: AbstractControl): { [key: string]: boolean } | null => {
+            for (let i=0; i<arraydata.length; i++) {
+                if (control.value === arraydata[i]['username']) {
+                    return {shouldBeUnique : true};
+                }
+            }
+            return null;
+        };
+    }
+    static emailBeUnique(arraydata:any): ValidatorFn {
+        return (control: AbstractControl): { [key: string]: boolean } | null => {
+            for (let i=0; i<arraydata.length; i++) {
+                if (control.value === arraydata[i]['email']) {
+                    return {emailBeUnique : true};
+                }
+            }
+            return null;
+        };
     }
 }

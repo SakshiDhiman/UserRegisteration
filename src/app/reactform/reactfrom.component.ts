@@ -1,5 +1,3 @@
-import { element } from 'protractor';
-import { HttpClientModule } from '@angular/common/http';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UsernameValidators } from './username.validators';
@@ -10,24 +8,22 @@ import { UsernameValidators } from './username.validators';
   styleUrls: ['./reactfrom.component.css']
 })
 export class ReactformComponent implements OnInit {
+ 
   form: FormGroup;
   hide = true;
   arraydata:any=[];
-  
+
   
 
-  constructor(
-    public fb: FormBuilder,
-    public http :HttpClientModule
-  ) { }
+  constructor( public fb: FormBuilder) { }
 
   ngOnInit() {
     this.form = this.fb.group({
       firstname: ['',Validators.required],
       lastname:['',Validators.required],
-      email: ['',[Validators.required,Validators.email]],
+      email: ['',[Validators.required,Validators.email,UsernameValidators.emailBeUnique(this.arraydata)]],
       phone: ['',[Validators.required,Validators.maxLength(10),Validators.pattern("^((\\+91-?)|0)?[0-9]{10}$")]],
-      username: ['',[Validators.required,UsernameValidators.cannotContainSpace],UsernameValidators.shouldBeUnique],
+      username: ['',[Validators.required,UsernameValidators.cannotContainSpace,UsernameValidators.shouldBeUnique(this.arraydata)]],
       password: ['',[Validators.required,Validators.pattern('^[a-zA-Z]+[0-9]+$'),Validators.minLength(6)]]
     })
   }
@@ -43,7 +39,7 @@ export class ReactformComponent implements OnInit {
       this.form.reset();
       
     }
- 
+    
   }
   onClear(){
     this.form.reset();
@@ -64,4 +60,8 @@ export class ReactformComponent implements OnInit {
   saveItem(user:any){
     user.isEdit=false;
   }
+  // callValidator(){
+  //   this.userEvent.emit(this.arraydata);
+  // }
+
 }

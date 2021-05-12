@@ -25,8 +25,8 @@ export class FormComponent implements OnInit {
       
       this.arraydata.push(templateForm.value);
       console.log(this.arraydata);
-      
       templateForm.reset();
+      
     }
     
   }
