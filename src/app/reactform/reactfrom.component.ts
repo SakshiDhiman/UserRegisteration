@@ -35,7 +35,7 @@ export class ReactformComponent implements OnInit {
       this.arraydata.push(form);
       
       console.log(this.arraydata);
-      alert('New row added successfully');
+
       this.form.reset();
       
     }
@@ -51,17 +51,15 @@ export class ReactformComponent implements OnInit {
         this.arraydata.splice(index, 1);   
     }  
 } 
-  updateItem(user:any){
-   user.isEdit=true;
+  updateItem(data:any){
+   data.isEdit=true;
   }
-  closeItem(user:any){
-    user.isEdit=false;
+  closeItem(data:any){
+    data.isEdit=false;
   }
-  saveItem(user:any){
-    user.isEdit=false;
+  saveItem(data:any){
+    data.isEdit=false;
   }
-  // callValidator(){
-  //   this.userEvent.emit(this.arraydata);
-  // }
+  
 
 }

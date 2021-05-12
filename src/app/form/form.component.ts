@@ -51,14 +51,14 @@ export class FormComponent implements OnInit {
         this.arraydata.splice(index, 1);   
     }  
 } 
-  updateItem(user:any){
-   user.isEdit=true;
-  }
-  closeItem(user:any){
-    user.isEdit=false;
-  }
-  saveItem(user:any){
-    user.isEdit=false;
-  }
+updateItem(data:any){
+  data.isEdit=true;
+ }
+ closeItem(data:any){
+   data.isEdit=false;
+ }
+ saveItem(data:any){
+   data.isEdit=false;
+ }
 
 }
